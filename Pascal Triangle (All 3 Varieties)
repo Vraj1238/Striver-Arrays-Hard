@@ -1,0 +1,63 @@
+//Variety 1
+//TC :- O(R)          SC :- O(1)
+int pascal_triangle_r_c(int r, int c) {
+    int res = 1;
+    // Calculates C(r-1, c-1)
+    //n => row-1    r => col-1
+    for(int i = 0; i < c - 1; i++) {
+        res = res * (r - 1 - i);    
+        res = res / (i + 1);
+    } 
+    return res;
+}
+//Variety 2
+//TC :- O(N)          SC :- O(1)
+vector<int> generateRow(int row) {
+    long long ans = 1;
+    vector<int> ansRow;
+    ansRow.push_back(1);
+    for(int col = 1; col < row; col++) {
+        ans = ans * (row - col);
+        ans = ans / col;
+        ansRow.push_back(ans);
+    }
+    return ansRow;
+}
+//Variety 3
+//Optimal
+//TC :- O(N*N)          SC :- O(N*N) => Auxiliary Space O(N)
+vector<vector<int>> pascalTriangle(int N) {
+    vector<vector<int>> ans;
+    for(int i = 1; i <= N; i++) {
+        vector<int> ansRow = generateRow(i);    //Use generateRow function
+        ans.push_back(ansRow);
+    }
+    return ans;
+}
+//Variety 3
+//My Solution 
+//TC :- O(N*N)                 SC :- O(N*N) => Auxiliary Space O(N*N)
+vector<vector<int>> pascal_triangle(int r) {
+    vector<vector<int>> Pascal(r, vector<int>(r, 0));
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j <= i; j++) {
+            if(j == 0 || j == i)
+                Pascal[i][j] = 1;
+            else
+                Pascal[i][j] = Pascal[i-1][j-1] + Pascal[i-1][j];
+        }
+    }
+    return Pascal;
+}
+int main() {
+    int r;
+    cin >> r;
+    vector<vector<int>> Pascal = pascal_triangle(r);
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j <= i; j++) {
+            cout << Pascal[i][j] << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}
